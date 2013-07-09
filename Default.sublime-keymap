@@ -1,5 +1,6 @@
 [
     { "keys": ["alt+h"], "command": "alt_html" }, 
     { "keys": ["alt+c"], "command": "alt_css" }, 
-    { "keys": ["alt+j"], "command": "alt_js" } 
+    { "keys": ["alt+j"], "command": "alt_js" },  
+    { "keys": ["alt+p"], "command": "alt_php" } 
 ]
