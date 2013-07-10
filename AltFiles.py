@@ -30,20 +30,33 @@ class AltFiles:
 
     def switch_file(self, file_ext):
         file_info = self.get_file_info()
-        if file_ext  ==  file_info[2]:
-            return
+        file_cur_ext = file_info[2]
+        file_exts = ["htm", "js", "css"]
+
         file_name = file_info[1] + "." + file_ext
+        relative_path = file_info[0]
+
+        if file_ext  ==  file_cur_ext:
+            return
+        if file_cur_ext in file_exts  and file_ext  == "php":
+            relative_path = "../../../../protected/presenters"
+
+        if file_cur_ext  == "php" and file_ext in file_exts:
+            relative_path = "../../../pages/mods/" + file_info[1]
+
+        full_path = os.path.abspath(os.path.join(self.window.active_view().file_name(), relative_path));
+
         file_full_path = self.find_in_open_files(file_name)
         if file_full_path is None:
-            file_full_path = self.find_in_folders(file_name)
+            file_full_path = self.find_in_folder(file_name, full_path)
         if file_full_path is None:
-            file_full_path = file_info[0] + "/" + file_info[1] + "." + file_ext
+            file_full_path = full_path + "\\" + file_info[1] + "." + file_ext
             open(file_full_path, 'w+')
         self.window.open_file(file_full_path)
 
 class AltHtmlCommand(sublime_plugin.WindowCommand, AltFiles):
     def run(self):
-        AltFiles.switch_file(self, 'html')
+        AltFiles.switch_file(self, 'htm')
 
 class AltCssCommand(sublime_plugin.WindowCommand,AltFiles):
     def run(self):
@@ -52,3 +65,8 @@ class AltCssCommand(sublime_plugin.WindowCommand,AltFiles):
 class AltJsCommand(sublime_plugin.WindowCommand,AltFiles):
     def run(self):
         AltFiles.switch_file(self, 'js')
+
+class AltPhpCommand(sublime_plugin.WindowCommand,AltFiles):
+    def run(self):
+        AltFiles.switch_file(self, 'php')
+
